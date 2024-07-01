@@ -2,11 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
 
-def cagr_compare(beginning_value, annual_growth, years, interest_rate):
+def cagr_compare(beginning_value=20.0, annual_growth=20.0, years=30, interest_rate=0.00):
     # Arrays to store the results
     years_array = np.arange(1, years + 1)
-    with_interest = (beginning_value + annual_growth * years_array).astype("f4")
-
+    with_interest = beginning_value + annual_growth * years_array
+    with_interest = with_interest.astype("f4")
+    
     without_interest = with_interest.copy()
 
     for y in range(years - 1):
@@ -27,7 +28,13 @@ def cagr_compare(beginning_value, annual_growth, years, interest_rate):
     ax1.set_xlabel("Years")
     ax1.set_ylabel("Value")
     ax1.legend()
-    ax1.grid(True)
+    ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
+    ax1.minorticks_on()
+
+    # Annotate value growth plot
+    for i in range(0, years, max(1, years // 10)):
+        ax1.annotate(f'{with_interest[i]:.1f}', (years_array[i], with_interest[i]), textcoords="offset points", xytext=(0,10), ha='center')
+        ax1.annotate(f'{without_interest[i]:.1f}', (years_array[i], without_interest[i]), textcoords="offset points", xytext=(0,-15), ha='center')
 
     # Plotting CAGR
     ax2.plot(years_array, with_interest_cagr, label="CAGR With Interest", color="blue")
@@ -36,12 +43,17 @@ def cagr_compare(beginning_value, annual_growth, years, interest_rate):
     ax2.set_xlabel("Years")
     ax2.set_ylabel("CAGR")
     ax2.legend()
-    ax2.grid(True)
+    ax2.grid(True, which='both', linestyle='--', linewidth=0.5)
+    ax2.minorticks_on()
+
+    # Annotate CAGR plot
+    for i in range(0, years, max(1, years // 10)):
+        ax2.annotate(f'{with_interest_cagr[i]:.4f}', (years_array[i], with_interest_cagr[i]), textcoords="offset points", xytext=(0,10), ha='center')
+        ax2.annotate(f'{without_interest_cagr[i]:.4f}', (years_array[i], without_interest_cagr[i]), textcoords="offset points", xytext=(0,-15), ha='center')
 
     plt.tight_layout()
     
     return fig
-
 def main():
     st.title("CAGR Comparison Tool")
     st.write("This tool compares the compound annual growth rate (CAGR) with and without interest over a specified number of years.")
