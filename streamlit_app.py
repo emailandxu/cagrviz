@@ -59,8 +59,8 @@ def main():
     st.write("This tool compares the compound annual growth rate (CAGR) with and without interest over a specified number of years.")
 
     # Creating sliders
-    beginning_value = st.slider("Beginning Value", min_value=1.0, max_value=100.0, value=20.0, step=0.1)
-    annual_growth = st.slider("Annual Growth", min_value=1.0, max_value=100.0, value=20.0, step=0.1)
+    beginning_value = st.slider("Beginning Value", min_value=1.0, max_value=10000.0, value=20.0, step=1.)
+    annual_growth = st.slider("Annual Growth", min_value=1.0, max_value=1000.0, value=20.0, step=0.1)
     years = st.slider("Years", min_value=1, max_value=50, value=30)
     interest_rate = st.slider("Interest Rate", min_value=0.0, max_value=0.20, value=0.00, step=0.01)
 
