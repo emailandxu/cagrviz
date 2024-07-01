@@ -2,10 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
 
-def cagr_compare(beginning_value=20.0, annual_growth=20.0, years=30, interest_rate=0.00):
+def salary_function(year, annual_growth=20., retire_year=30):
+    if year > retire_year:
+        return 0
+    else:
+        return annual_growth
+
+def cagr_compare(beginning_value=20.0, annual_growth=20.0, retire_years=30, years=30, interest_rate=0.04):
     # Arrays to store the results
     years_array = np.arange(1, years + 1)
-    with_interest = beginning_value + annual_growth * years_array
+    with_interest = beginning_value + np.cumsum([salary_function(year, annual_growth, retire_years) for year in years_array])
     with_interest = with_interest.astype("f4")
     
     without_interest = with_interest.copy()
@@ -54,6 +60,7 @@ def cagr_compare(beginning_value=20.0, annual_growth=20.0, years=30, interest_ra
     plt.tight_layout()
     
     return fig
+
 def main():
     st.title("CAGR Comparison Tool")
     st.write("This tool compares the compound annual growth rate (CAGR) with and without interest over a specified number of years.")
@@ -62,11 +69,12 @@ def main():
     beginning_value = st.slider("Beginning Value", min_value=1.0, max_value=2000.0, value=20.0, step=1.)
     annual_growth = st.slider("Annual Growth", min_value=0.0, max_value=200.0, value=20.0, step=0.1)
     years = st.slider("Years", min_value=1, max_value=50, value=30)
+    retire_years = st.slider("Retire Years", min_value=0, max_value=50, value=30)
     interest_rate = st.slider("Interest Rate", min_value=0.0, max_value=0.20, value=0.00, step=0.01)
 
     # Button to generate plot
     if st.button('Calculate CAGR'):
-        fig = cagr_compare(beginning_value, annual_growth, years, interest_rate)
+        fig = cagr_compare(beginning_value, annual_growth, retire_years, years, interest_rate)
         st.pyplot(fig)
 
 if __name__ == "__main__":
