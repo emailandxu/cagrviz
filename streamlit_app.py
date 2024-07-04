@@ -70,7 +70,7 @@ def main():
     annual_growth = st.slider("Annual Growth", min_value=0.0, max_value=200.0, value=20.0, step=0.1)
     years = st.slider("Years", min_value=1, max_value=50, value=30)
     retire_years = st.slider("Retire Years", min_value=0, max_value=50, value=30)
-    interest_rate = st.slider("Interest Rate", min_value=0.0, max_value=0.20, value=0.00, step=0.01)
+    interest_rate = st.slider("Interest Rate", min_value=0.0, max_value=0.20, value=0.00, step=0.001)
 
     # Button to generate plot
     if st.button('Calculate CAGR'):
